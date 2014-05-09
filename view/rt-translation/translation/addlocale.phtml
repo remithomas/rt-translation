@@ -1,0 +1,109 @@
+<div class='masonry-container'>
+    
+    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12 masonry-item'>
+    
+<?php
+
+    $form = $this->form;
+    $form->prepare();
+    
+    $form   ->setAttribute('method', 'post')
+            ->setAttribute("role", "form")
+            ->setAttribute("action", $this->url("developer/translation/locale/add", array()))
+            ->setAttribute("name", "formLocale")
+            ->setAttribute("id", "formLocale")
+            ->setAttribute("class", "form-horizontal")
+            ->setAttribute("novalidate", "")
+            // angular
+            ->setAttribute("data-ng-controller", "FormCtrl")
+            ->setAttribute("data-ng-submit", "processForm(formLocale,\$event)");
+    
+    // Render the opening tag
+    echo $this->form()->openTag($form);
+    ?>
+    <input type="text" ng-show="false" name="redirectForm" ng-model="redirectForm" data-ng-initial="<?php echo $this->url("developer/translation", array(), array('force_canonical' => true)); ?>" value="<?php echo $this->url("developer/translation", array(), array('force_canonical' => true)); ?>" />
+
+    <div class="form-group " ng-class="{'has-error': (formLocale.locale.$invalid && !formLocale.locale.$pristine)}">
+        <?php
+        $locale = $this->form->get("locale");
+        $locale->setAttribute("placeholder", "locale")
+                ->setAttribute("class", "form-control")
+                ->setAttribute("data-ng-model", "locale")
+                ->setAttribute("data-ng-initial", $locale->getValue())
+                ->setAttribute("required", false)
+                ->setAttribute("data-ng-required", true)
+                ->setAttribute("id", "locale");
+        ?>
+        <label for="locale" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $locale->getLabel(); ?> <span class="required">*</span></label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <?php echo $this->formInput($locale); ?>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="help-block"><?php echo $this->translate("Locale", "RtTranslation"); ?></p>
+        </div>
+    </div>
+        
+    <div class="form-group " ng-class="{'has-error': (formLocale.name.$invalid && !formLocale.name.$pristine)}">
+        <?php
+        $name = $this->form->get("name");
+        $name->setAttribute("placeholder", "name")
+                ->setAttribute("class", "form-control")
+                ->setAttribute("data-ng-model", "name")
+                ->setAttribute("data-ng-initial", $name->getValue())
+                ->setAttribute("required", false)
+                ->setAttribute("data-ng-required", true)
+                ->setAttribute("id", "name");
+        ?>
+        <label for="name" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $name->getLabel(); ?> <span class="required">*</span></label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <?php echo $this->formInput($name); ?>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="help-block"><?php echo $this->translate("Name", "RtTranslation"); ?></p>
+        </div>
+    </div>
+
+    <div class="form-group " ng-class="{'has-error': (formLocale.default.$invalid && !formLocale.default.$pristine)}">
+        <?php
+        $default = $this->form->get("default");
+        $default   ->setAttribute("class", "form-control")
+                ->setAttribute("data-ng-model", "default")
+                ->setAttribute("data-ng-initial", $default->getValue())
+                ->setAttribute("required", false)
+                ->setAttribute("data-ng-required", true)
+                ->setAttribute("id", "default");
+        ?>
+        <label for="default" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $default->getLabel(); ?> <span class="required">*</span></label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <?php echo $this->formSelect($default); ?>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="help-block"><?php echo $this->translate("Default", "RtTranslation"); ?></p>
+        </div>
+    </div>
+        
+    <div class="form-group " ng-class="{'has-error': (formLocale.published.$invalid && !formLocale.published.$pristine)}">
+        <?php
+        $published = $this->form->get("published");
+        $published   ->setAttribute("class", "form-control")
+                    ->setAttribute("data-ng-model", "published")
+                    ->setAttribute("data-ng-initial", $published->getValue())
+                    ->setAttribute("required", false)
+                    ->setAttribute("data-ng-required", true)
+                    ->setAttribute("id", "published");
+        ?>
+        <label for="published" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $published->getLabel(); ?> <span class="required">*</span></label>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <?php echo $this->formSelect($published); ?>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="help-block"><?php echo $this->translate("Publish status of the locale", "RtTranslation"); ?></p>
+        </div>
+    </div>
+    <?php echo $this->formControls('formLocale')->renderModalCancel(); ?>
+    <div class="form-group">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><?php echo $this->formControls('formLocale')->renderSubmitBtns(); ?></div>
+    </div>
+<?php echo $this->form()->closeTag(); ?>
+    </div>
+</div>

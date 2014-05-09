@@ -1,0 +1,8 @@
+<ul>
+    <li><a href='<?php echo $this->url("developer/translation/locale/add", array()); ?>'><?php echo $this->translate("Add locale", 'RtTranslation'); ?></a></li>
+    <li><a href='<?php echo $this->url("developer/translation/locale", array()); ?>'><?php echo $this->translate("List of locales", 'RtTranslation'); ?></a></li>
+    <li><a href='<?php echo $this->url("developer/translation/message/add", array()); ?>'><?php echo $this->translate("Add Message key", 'RtTranslation'); ?></a></li>
+    <li><a href='<?php echo $this->url("developer/translation/message", array()); ?>'><?php echo $this->translate("List of message keys", 'RtTranslation'); ?></a></li>
+</ul>
+
+<?php echo $this->RtTranslationCurrentLocale(); ?>

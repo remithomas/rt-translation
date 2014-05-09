@@ -1,0 +1,31 @@
+{
+    "name": "remithomas/rt-translation",
+    "description": "translations helper and manager",
+    "type": "library",
+    "keywords": [
+        "zf2","translation"
+    ],
+    "homepage": "https://github.com/remithomas/rt-translation",
+    "authors": [
+        {
+            "name": "Remi THOMAS",
+            "email": "remi.thomas@yahoo.fr",
+            "homepage": "http://remithomas.fr/"
+        }
+    ],
+    "version": "0.1",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-eventmanager": "2.*",
+        "zendframework/zend-modulemanager": "2.*",
+        "zendframework/zend-mvc": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "RtTranslation": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
