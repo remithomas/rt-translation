@@ -3,6 +3,12 @@ rt-translation
 
 ZF2 translations helper and manager
 
+
+
+CURRENTLY IN DEVELOPPEMENT: DO NOT USE !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 Features / Goals
 ============
 
