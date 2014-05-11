@@ -88,6 +88,8 @@ class TranslationController extends AbstractActionController
      */
     public function localeAction(){
         $viewmodel = new ViewModel();
+        $locales = $this->getTranslationService()->getLocales();
+        $viewmodel->setVariable("locales", $locales);
         return $viewmodel;
     }
 
@@ -121,6 +123,23 @@ class TranslationController extends AbstractActionController
     
     public function editlocaleAction(){
         $viewmodel = new ViewModel();
+        return $viewmodel;
+    }
+    
+    /**
+     * 
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function keyAction(){
+        $viewmodel = new ViewModel();
+        
+        $paginator = $this->getTranslationService()->getKeys(true);
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        // set the number of items per page to 10
+        $paginator->setItemCountPerPage(10);
+        
+        $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }
     

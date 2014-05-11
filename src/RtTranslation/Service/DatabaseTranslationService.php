@@ -45,21 +45,5 @@ class DatabaseTranslationService implements FactoryInterface
         }
         
         return $translator;
-        
-        /*
-        $translator = new \Zend\I18n\Translator\Translator();
-        //$translator->getPluginManager()->setServiceLocator($serviceLocator);
-        //$translator->getPluginManager()->setInvokableClass('rt_translation_plugin_translator', '\RtTranslation\I18n\Translator\Loader\Database', true);
-        $translator->getPluginManager()->setInvokableClass('rt_translation_plugin_translator', '\RtTranslation\Service\DatabaseLoaderFactory', true);
-        $translator->getPluginManager()->setInvokableClass('rt_translation_db_translator', '\Zend\Db\Adapter\Adapter', true);
-        $translator->addRemoteTranslations('rt_translation_plugin_translator');
-        \Zend\Debug\Debug::dump($translator);die;
-        //var_dump($translator->translate("message"));
-        return $translator;
-        
-        /*
-        return new Database(
-            $serviceLocator->get('Zend\Db\Adapter\Adapter')
-        );*/
     }
 }

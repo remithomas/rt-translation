@@ -1,1 +1,9 @@
-List of locales
+<h1><?php echo $this->translate("List of locales", "RtTranslation"); ?></h1>
+
+<ul>
+<?php
+foreach ($this->locales as $locale){
+    echo sprintf("<li>[%s] %s</li>", $locale['locale_locale'], $locale['locale_name']);
+}
+?>
+</ul>

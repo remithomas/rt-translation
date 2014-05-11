@@ -107,6 +107,24 @@ class Module implements
                 'MvcTranslator' => "translator"
             ),
             'factories' => array(
+                'rt_translation_locale_table' => function(ServiceManager $sm) {
+                    $options = $sm->get('rt_translation_module_options');
+                    $adapter = $sm->get($options->getDbAdapter());
+                    $table = new Model\LocaleTable($adapter);
+                    return $table;
+                },
+                'rt_translation_key_table' => function(ServiceManager $sm) {
+                    $options = $sm->get('rt_translation_module_options');
+                    $adapter = $sm->get($options->getDbAdapter());
+                    $table = new Model\KeyTable($adapter);
+                    return $table;
+                },
+                'rt_translation_translation_table' => function(ServiceManager $sm) {
+                    $options = $sm->get('rt_translation_module_options');
+                    $adapter = $sm->get($options->getDbAdapter());
+                    $table = new Model\TranslationTable($adapter);
+                    return $table;
+                },
                 'rt_translation_module_options' => function (ServiceManager $sm) {
                     $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['RtTranslation']) ? $config['RtTranslation'] : array());

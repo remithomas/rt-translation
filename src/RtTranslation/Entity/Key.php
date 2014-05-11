@@ -20,14 +20,20 @@ class Key{
      *
      * @var string 
      */
-    protected $locale;
-
-    /**
-     *
-     * @var string 
-     */
     protected $textDomain = 'default';
 
+    /**
+     * 
+     * @param array $data
+     * @return \RtTranslation\Entity\Key
+     */
+    public function exchangeArray(array $data){
+        $this->id = (isset($data['key_id']) ? $data['key_id'] : null);
+        $this->message = (isset($data['key_message']) ? $data['key_message'] : null);
+        $this->textDomain = (isset($data['key_text_domain']) ? $data['key_text_domain'] : null);
+        return $this;
+    }
+    
     /**
      * 
      * @param integer $id
@@ -62,24 +68,6 @@ class Key{
      */
     public function getMessage(){
         return $this->message;
-    }
-    
-    /**
-     * 
-     * @param string $locale
-     * @return \RtTranslation\Entity\Key
-     */
-    public function setLocale($locale){
-        $this->locale = $locale;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function getLocale(){
-        return $this->locale;
     }
     
     /**

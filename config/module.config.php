@@ -67,13 +67,13 @@ return array(
                                     ),
                                 ),
                             ),
-                            'message' => array(
+                            'key' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Literal',
                                 'options' => array(
-                                    'route'    => '/message',
+                                    'route'    => '/key',
                                     'defaults' => array(
                                         'controller' => 'RtTranslation\Controller\Translation',
-                                        'action'     => 'message',
+                                        'action'     => 'key',
                                     ),
                                 ),
                                 'may_terminate' => true,
@@ -84,17 +84,17 @@ return array(
                                             'route'    => '/add',
                                             'defaults' => array(
                                                 'controller' => 'RtTranslation\Controller\Translation',
-                                                'action'     => 'addmessage',
+                                                'action'     => 'addkey',
                                             ),
                                         ),
                                     ),
                                     'edit' => array(
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route'    => '/edit/:message',
+                                            'route'    => '/edit/:key',
                                             'defaults' => array(
                                                 'controller' => 'RtTranslation\Controller\Translation',
-                                                'action'     => 'editmessage',
+                                                'action'     => 'editkey',
                                             ),
                                             'constraints' => array(
                                                 'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',

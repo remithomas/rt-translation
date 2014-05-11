@@ -71,6 +71,20 @@ class TranslationService implements ServiceManagerAwareInterface {
         return $this;
     }
     
+    public function getLocaleTable(){
+        $this->serviceManager;
+    }
+    
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getLocales(){
+        return $this->serviceManager->get("rt_translation_locale_table")->fetchAll();
+    }
+    
+    
     /**
      * 
      * @param \RtTranslation\Entity\Locale $locale
@@ -88,6 +102,10 @@ class TranslationService implements ServiceManagerAwareInterface {
     
     public function changeLocale($locale = 'en_US'){
         
+    }
+    
+    public function getKeys($paginator = false){
+        return $this->serviceManager->get("rt_translation_key_table")->fetchAll($paginator);
     }
     
     public function addKey(Entity\Key $key){

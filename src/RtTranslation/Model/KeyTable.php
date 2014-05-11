@@ -3,7 +3,14 @@
 namespace RtTranslation\Model;
  
 use Zend\Db\TableGateway\AbstractTableGateway,
-    Zend\Db\Adapter\Adapter;
+    Zend\Db\Adapter\Adapter,
+    Zend\Db\ResultSet\ResultSet;
+
+use Zend\Db\Sql\Select;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
+
+use RtTranslation\Entity\Key;
  
 class KeyTable extends AbstractTableGateway
 {
@@ -17,6 +24,34 @@ class KeyTable extends AbstractTableGateway
     public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
+        $this->resultSetPrototype = new ResultSet(new Key);
         $this->initialize();
+    }
+    
+    /**
+     * 
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function fetchAll($paginated = false){
+        if($paginated) {
+            // create a new Select object for the table album
+            $select = new Select($this->table);
+            // create a new result set based on the Album entity
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Key());
+            // create a new pagination adapter object
+            $paginatorAdapter = new DbSelect(
+                    // our configured select object
+                    $select,
+                    // the adapter to run it against
+                    $this->adapter,
+                    // the result set to hydrate
+                    $resultSetPrototype
+            );
+            $paginator = new Paginator($paginatorAdapter);
+            return $paginator;
+        }
+        $resultSet = $this->tableGateway->select();
+        return $resultSet;
     }
 }
