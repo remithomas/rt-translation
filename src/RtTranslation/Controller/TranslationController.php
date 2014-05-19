@@ -177,7 +177,7 @@ class TranslationController extends AbstractActionController
     
     public function getKeyForm(){
         if(!$this->keyForm){
-            $this->setLocaleForm($this->getServiceLocator()->get("rt_translation_key_form"));
+            $this->setKeyForm($this->getServiceLocator()->get("rt_translation_key_form"));
         }
         return $this->keyForm;
     }

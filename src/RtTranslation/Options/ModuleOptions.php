@@ -30,12 +30,17 @@ class ModuleOptions extends AbstractOptions
      */
     protected $textDomains = true;
 
-
     /**
      * Db Adapter
      * @var string 
      */
     protected $dbAdapter = "Zend\Db\Adapter\Adapter";
+
+    /**
+     *
+     * @var bool 
+     */
+    protected $debugger = false;
 
     /**
      * Set use cache
@@ -118,5 +123,23 @@ class ModuleOptions extends AbstractOptions
      */
     public function getDefaultLanguage(){
         return $this->defaultLanguage;
+    }
+    
+    /**
+     * 
+     * @param bool $debugger
+     * @return \RtTranslation\Options\ModuleOptions
+     */
+    public function setDebugger($debugger = false){
+        $this->debugger = $debugger;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function getDebugger(){
+        return $this->debugger;
     }
 }

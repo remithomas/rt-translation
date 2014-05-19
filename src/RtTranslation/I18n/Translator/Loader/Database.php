@@ -34,7 +34,7 @@ class Database implements RemoteLoaderInterface
      * @return \Zend\I18n\Translator\TextDomain
      */
     public function load($locale, $textDomain) {
-        //var_dump($textDomain);die;
+        
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select();
         $select ->from('translation_locale')
@@ -52,14 +52,11 @@ class Database implements RemoteLoaderInterface
         if ($localeInformation->count() == 0) {
             return $textDomain;
         }
-        //return $textDomain;
         $textDomain = new TextDomain();
         $aLocaleInformation = $localeInformation->current();
-        //\Zend\Debug\Debug::dump($aLocaleInformation['locale_plural_rule']);die("pr");
         $textDomain->setPluralRule(
             \Zend\I18n\Translator\Plural\Rule::fromString($aLocaleInformation['locale_plural_forms'])
         );
-        
         
         $select = $sql->select();
         $select ->from('translation_translation')
@@ -91,8 +88,6 @@ class Database implements RemoteLoaderInterface
             }
             
         }
-        //echo "<textarea>" . $sql->getSqlStringForSqlObject($select) . "</textarea>";
-        //\Zend\Debug\Debug::dump($textDomain);die;
         return $textDomain;
     }
 }

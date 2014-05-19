@@ -10,14 +10,26 @@ class KeyForm extends Form{
         parent::__construct($name, $options);
         
         $this->add(array(
-            'name' => 'key',
+            'name' => 'message',
             'type'=>'Zend\Form\Element\Text',
             'attributes' => array(
                 'required' => 'required',
-                'placeholder' => "Key"
+                'placeholder' => "Message key"
             ),
             'options'=>array(
-                'label'=>"Key",
+                'label'=>"Message key",
+            )
+        ));
+        
+        $this->add(array(
+            'name' => 'textDomain',
+            'type'=>'Zend\Form\Element\Text',
+            'attributes' => array(
+                'required' => 'required',
+                'placeholder' => "Text domain"
+            ),
+            'options'=>array(
+                'label'=>"Text domain",
             )
         ));
         

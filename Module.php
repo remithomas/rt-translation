@@ -55,8 +55,8 @@ class Module implements
         
         // mise en place du service de traduction
         $translator = $serviceManager->get('translator');
+        $translator->enableEventManager();
         $translator ->setLocale($sessionContainer->mylocale);
-            //\Zend\Debug\Debug::dump($translator);die("transl");
         $mylocale = $sessionContainer->mylocale;
         
         $viewHelper = $serviceManager->get('viewHelperManager');
@@ -68,6 +68,21 @@ class Module implements
             $controller      = $e->getTarget();
             $controller->layout()->mylocale = $mylocale;
         }, 100);
+        
+        // collector
+        $collector = $serviceManager->get('RtTranslation\ConfigCollector');
+        $events->attach('Zend\I18n\Translator\Translator', Translator::EVENT_MISSING_TRANSLATION, function ($e)  use ($collector){
+            $params = $e->getParams();
+            $collector->addTranslationCall($params['message'], $params['text_domain'], $params['locale'], true);
+            
+            /*$event = $e->getName();
+            
+            printf(
+                'Handled event "%s", with parameters %s',
+                $event,
+                json_encode($params)
+            );*/
+        });
     }
     
     protected function setTranslatorToHelpers(){
@@ -86,10 +101,16 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'RtTranslationCurrentLocale' => function($sm) {
-                    $locator = $sm->getServiceLocator(); // $sm is the view helper manager, so we need to fetch the main service manager
+                'currentLocale' => function($sm) {
+                    $locator = $sm->getServiceLocator();
                     return new \RtTranslation\View\Helper\RtTranslationCurrentLocale();
                 },
+                'translate' => function($sm){
+                    $locator = $sm->getServiceLocator();
+                    $translateHelper = new \RtTranslation\View\Helper\Translate();
+                    $translateHelper->setServiceLocator($locator);
+                    return $translateHelper;
+                }
             ),
         );
     }
@@ -130,15 +151,13 @@ class Module implements
                     return new Options\ModuleOptions(isset($config['RtTranslation']) ? $config['RtTranslation'] : array());
                 },
                 'rt_translation_locale_form' => function(ServiceManager $sm) {
-                    //$options = $sm->get('rt_translation_module_options');
                     $form = new Form\LocaleForm();
-                    //$form   ->bind(new Entity\Locale())
-                    $form        ->setInputFilter(new Form\LocaleFilter());
+                    $form->setInputFilter(new Form\LocaleFilter());
                     return $form;
                 },
                 'rt_translation_key_form' => function(ServiceManager $sm) {
                     $form = new Form\KeyForm();
-                    //$form->setInputFilter(new Form\LocaleFilter());
+                    $form->setInputFilter(new Form\KeyFilter());
                     return $form;
                 },
                 'rt_translation_translation_form' => function(ServiceManager $sm) {

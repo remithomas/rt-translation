@@ -2,6 +2,21 @@
 namespace RtTranslation;
 
 return array(
+    
+    /* ZendDeveloperTools Configuration */
+    'zenddevelopertools' => array(
+        'profiler' => array(
+            'collectors' => array(
+                'rt_translation_translations' => 'RtTranslation\ConfigCollector',
+            ),
+        ),
+        'toolbar' => array(
+            'entries' => array(
+                'rt_translation_translations' => 'zend-developer-tools/toolbar/rt-translation-translations',
+            ),
+        ),
+    ),
+    
     'router' => array(
         'routes' => array(
             'changelocale' => array(
@@ -128,12 +143,19 @@ return array(
         ),
         'template_map' => array(
             'rt-translation/translation/index' => __DIR__ . '/../view/rt-translation/translation/index.phtml',
+            'zend-developer-tools/toolbar/rt-translation-translations' => __DIR__ . '/../view/zend-developer-tools/toolbar/rt-translation-translations.phtml'
         ),
         'strategies' => array(
             'ViewJsonStrategy',
         ),
     ),
     'service_manager' => array(
+        'invokables' => array(
+            'RtTranslation\ConfigCollector'   => 'RtTranslation\Collector\ConfigCollector',
+        ),
+        'factories' => array(
+            
+        ),
         'aliases' => array(
             'rt_translation_db_translator' => 'Zend\Db\Adapter\Adapter',
         ),
@@ -145,6 +167,7 @@ return array(
     ),
     'translator' => array(
         'locale' => 'en_US',
+        'event_manager_enabled' => true,
         'remote_translation' => array(
             array(
                 //'type' => 'dbTranslatorLoader',
