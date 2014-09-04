@@ -77,7 +77,7 @@ class TranslationService implements ServiceManagerAwareInterface {
     
     
     /**
-     * 
+     * List all locales
      * @return array
      */
     public function getLocales(){
@@ -87,12 +87,20 @@ class TranslationService implements ServiceManagerAwareInterface {
     
     /**
      * 
+     * @todo check if exist locale
+     * @todo check if one locale is already default
+     * 
      * @param \RtTranslation\Entity\Locale $locale
      * @return boolean
      */
     public function addLocale(Entity\Locale $locale){
-        \Zend\Debug\Debug::dump($locale);
-        die;
+        $this->serviceManager->get("rt_translation_locale_table")->insert(array(
+            'locale_name' => utf8_decode($locale->getName()),
+            'locale_locale' => utf8_decode($locale->getLocale()),
+            'locale_published' => (integer) $locale->getPublished(),
+            'locale_default' => (integer) $locale->getDefault(),
+            'locale_plural_forms'   => $locale->getPluralForms(),
+        ));
         return true;
     }
     
@@ -110,5 +118,25 @@ class TranslationService implements ServiceManagerAwareInterface {
     
     public function addKey(Entity\Key $key){
         
+    }
+    
+    public function editKey(Entity\Key $key){
+        
+    }
+   
+    public function addTranslation(){
+        
+    }
+    
+    public function editTranslation(){
+        
+    }
+    
+    /**
+     * List all translations
+     * @return array
+     */
+    public function getTranslations(){
+        return $this->serviceManager->get("rt_translation_translation_table")->fetchAll();
     }
 }

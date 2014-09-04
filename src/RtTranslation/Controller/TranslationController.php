@@ -12,7 +12,7 @@ use Zend\Session\Container;
 use Zend\Form\Form;
 
 use RtTranslation\Service\TranslationService;
-use RtTranslation\Entity\Locale;
+use RtTranslation\Entity\Locale as RtLocale;
 
 class TranslationController extends AbstractActionController
 {
@@ -107,12 +107,9 @@ class TranslationController extends AbstractActionController
         
         
         if($request->isPost()) {
-            $form->bind(new Locale());
             $form->setData($request->getPost());
             if($form->isValid()) {
                 $service->addLocale($form->getData());
-            }else{
-                var_dump($form->getData());
             }
         }
         
