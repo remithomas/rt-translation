@@ -118,6 +118,42 @@ return array(
                                     ),
                                 ),
                             ),
+                            'translation' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Literal',
+                                'options' => array(
+                                    'route'    => '/translation',
+                                    'defaults' => array(
+                                        'controller' => 'RtTranslation\Controller\Translation',
+                                        'action'     => 'translation',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'add' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                                        'options' => array(
+                                            'route'    => '/add',
+                                            'defaults' => array(
+                                                'controller' => 'RtTranslation\Controller\Translation',
+                                                'action'     => 'addtranslation',
+                                            ),
+                                        ),
+                                    ),
+                                    'edit' => array(
+                                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => array(
+                                            'route'    => '/edit/:key',
+                                            'defaults' => array(
+                                                'controller' => 'RtTranslation\Controller\Translation',
+                                                'action'     => 'edittranslation',
+                                            ),
+                                            'constraints' => array(
+                                                'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),

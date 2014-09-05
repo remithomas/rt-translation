@@ -18,5 +18,21 @@ class TranslationForm extends Form{
             ),
         ));
         
+        
+        
+        $this->add(array(
+            'name' => 'published',
+            'type'=>'Zend\Form\Element\Select',
+            'attributes' => array(
+                'required' => 'required',
+            ),
+            'options'=>array(
+                'label'=>"Publication of the locale",
+                'value_options' => array(
+                    '0' => 'Not published',
+                    '1' => 'Published'
+                )
+            )
+        ));
     }
 }

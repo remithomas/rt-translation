@@ -3,6 +3,8 @@
     <li><a href='<?php echo $this->url("developer/translation/locale", array()); ?>'><?php echo $this->translate("List of locales", 'RtTranslation'); ?></a></li>
     <li><a href='<?php echo $this->url("developer/translation/key/add", array()); ?>'><?php echo $this->translate("Add Message key", 'RtTranslation'); ?></a></li>
     <li><a href='<?php echo $this->url("developer/translation/key", array()); ?>'><?php echo $this->translate("List of message keys", 'RtTranslation'); ?></a></li>
+    <li><a href='<?php echo $this->url("developer/translation/translation", array()); ?>'><?php echo $this->translate("Translations", 'RtTranslation'); ?></a></li>
+    <li><a href='<?php echo $this->url("developer/translation/translation/add", array()); ?>'><?php echo $this->translate("Add translations", 'RtTranslation'); ?></a></li>
 </ul>
 
-<?php echo $this->RtTranslationCurrentLocale(); ?>
+<?php echo $this->currentLocale(); ?>

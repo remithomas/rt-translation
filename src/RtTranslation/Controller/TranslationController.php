@@ -12,7 +12,7 @@ use Zend\Session\Container;
 use Zend\Form\Form;
 
 use RtTranslation\Service\TranslationService;
-use RtTranslation\Entity\Locale;
+use RtTranslation\Entity\Locale as RtLocale;
 
 class TranslationController extends AbstractActionController
 {
@@ -104,15 +104,12 @@ class TranslationController extends AbstractActionController
         $form       = $this->getLocaleForm();
         $service    = $this->getTranslationService();
         
-        
-        
         if($request->isPost()) {
-            $form->bind(new Locale());
             $form->setData($request->getPost());
             if($form->isValid()) {
                 $service->addLocale($form->getData());
-            }else{
-                var_dump($form->getData());
+                // redirect
+                
             }
         }
         
@@ -143,8 +140,37 @@ class TranslationController extends AbstractActionController
         return $viewmodel;
     }
     
+    /**
+     * Add key action
+     * @return \Zend\View\Model\ViewModel
+     */
     public function addkeyAction(){
+        $viewmodel  = new ViewModel();
+        $request    = $this->getRequest();
+        $form       = $this->getKeyForm();
+        $service    = $this->getTranslationService();
+        
+        if($request->isPost()) {
+            $form->setData($request->getPost());
+            if($form->isValid()) {
+                $service->addKey($form->getData());
+            }
+        }
+        
+        $viewmodel->setVariable("form", $form);
+        
+        return $viewmodel;
+    }
+    
+    public function translationAction(){
         $viewmodel = new ViewModel();
+        $paginator = $this->getTranslationService()->getTranslations(true);
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        // set the number of items per page to 20
+        $paginator->setItemCountPerPage(20);
+        
+        $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }
     
@@ -163,6 +189,10 @@ class TranslationController extends AbstractActionController
         return $this;
     }
     
+    /**
+     * 
+     * @return \Zend\Form\Form
+     */
     public function getLocaleForm(){
         if(!$this->localeForm){
             $this->setLocaleForm($this->getServiceLocator()->get("rt_translation_locale_form"));
@@ -170,11 +200,20 @@ class TranslationController extends AbstractActionController
         return $this->localeForm;
     }
     
+    /**
+     * 
+     * @param \Zend\Form\Form $keyForm
+     * @return \RtTranslation\Controller\TranslationController
+     */
     public function setKeyForm(Form $keyForm){
         $this->keyForm = $keyForm;
         return $this;
     }
     
+    /**
+     * 
+     * @return \Zend\Form\Form
+     */
     public function getKeyForm(){
         if(!$this->keyForm){
             $this->setKeyForm($this->getServiceLocator()->get("rt_translation_key_form"));

@@ -3,7 +3,7 @@
 <ul>
 <?php
 foreach ($this->locales as $locale){
-    echo sprintf("<li>[%s] %s</li>", $locale['locale_locale'], $locale['locale_name']);
+    echo sprintf("<li class='%s'>[%s] %s</li>", ($locale['locale_default'] == 1 ? "default" : ""), $locale['locale_locale'], utf8_encode($locale['locale_name']));
 }
 ?>
 </ul>
