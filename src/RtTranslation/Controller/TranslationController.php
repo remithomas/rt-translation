@@ -108,8 +108,11 @@ class TranslationController extends AbstractActionController
             $form->setData($request->getPost());
             if($form->isValid()) {
                 $service->addLocale($form->getData());
+<<<<<<< HEAD
                 // redirect
                 
+=======
+>>>>>>> FETCH_HEAD
             }
         }
         

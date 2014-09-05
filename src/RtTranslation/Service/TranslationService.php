@@ -137,6 +137,17 @@ class TranslationService implements ServiceManagerAwareInterface {
         
     }
     
+<<<<<<< HEAD
+=======
+    public function editKey(Entity\Key $key){
+        
+    }
+   
+    public function addTranslation(){
+        
+    }
+    
+>>>>>>> FETCH_HEAD
     public function editTranslation(){
         
     }
@@ -145,7 +156,12 @@ class TranslationService implements ServiceManagerAwareInterface {
      * List all translations
      * @return array
      */
+<<<<<<< HEAD
     public function getTranslations($paginator = false){
         return $this->serviceManager->get("rt_translation_translation_table")->fetchAll($paginator);
+=======
+    public function getTranslations(){
+        return $this->serviceManager->get("rt_translation_translation_table")->fetchAll();
+>>>>>>> FETCH_HEAD
     }
 }

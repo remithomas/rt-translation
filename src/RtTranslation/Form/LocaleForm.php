@@ -3,6 +3,10 @@
 namespace RtTranslation\Form;
 
 use Zend\Form\Form;
+<<<<<<< HEAD
+=======
+use Zend\InputFilter\InputFilter;
+>>>>>>> FETCH_HEAD
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 use RtTranslation\Entity\Locale as RtLocale;
