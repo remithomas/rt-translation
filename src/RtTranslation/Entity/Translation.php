@@ -67,8 +67,12 @@ class Translation {
         $this->id = (isset($data['translation_id']) ? $data['translation_id'] : null);
         $this->locale = (isset($data['translation_locale']) ? (string) $data['translation_locale'] : null);
         $this->keyId = (isset($data['translation_key_id']) ? (integer) $data['translation_key_id'] : null);
-        $this->message = (isset($data['translation_key_id']) ? (integer) $data['translation_key_id'] : null);
+        $this->translation = (isset($data['translation_translation']) ? (string) $data['translation_translation'] : null);
+        $this->pluralIndex = (isset($data['translation_plural_index']) ? (integer) $data['translation_plural_index'] : null);
+        $this->author = (isset($data['translation_author']) ? (integer) $data['translation_author'] : null);
+        $this->version = (isset($data['translation_version']) ? (integer) $data['translation_version'] : null);
         $this->timestamp = (isset($data['translation_timestamp']) ? (integer) $data['translation_timestamp'] : null);
+        $this->published = (isset($data['translation_published']) ? (bool) $data['translation_published'] : null);
         return $this;
     }
     

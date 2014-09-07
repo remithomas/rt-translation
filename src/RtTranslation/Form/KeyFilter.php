@@ -19,8 +19,8 @@ class KeyFilter extends InputFilter{
                 array(
                     'name'    => 'StringLength',
                     'options' => array(
-                        'min' => 1,
-                        'max' => 512,
+                        'min' => 2,
+                        'max' => 6,
                     ),
                 ),
             ),
@@ -37,7 +37,7 @@ class KeyFilter extends InputFilter{
                 array(
                     'name'    => 'StringLength',
                     'options' => array(
-                        'min' => 1,
+                        'min' => 3,
                         'max' => 255,
                         'encoding' => 'UTF-8',
                     ),

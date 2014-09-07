@@ -117,6 +117,14 @@ class TranslationService implements ServiceManagerAwareInterface {
     }
     
     /**
+     * 
+     * @return array
+     */
+    public function getTextDomains(){
+        return $this->serviceManager->get("rt_translation_key_table")->fetchTextDomains();
+    }
+    
+    /**
      * Add key message
      * @param \RtTranslation\Entity\Key $key
      * @return boolean
@@ -133,21 +141,17 @@ class TranslationService implements ServiceManagerAwareInterface {
         
     }
    
-    public function addTranslation(){
-        
+    public function addTranslation(Entity\Translation $translation){
+        $this->serviceManager->get("rt_translation_locale_table")->insert(array(
+            'locale_name' => utf8_decode($locale->getName()),
+            'locale_locale' => utf8_decode($locale->getLocale()),
+            'locale_published' => (integer) $locale->getPublished(),
+            'locale_default' => (integer) $locale->getDefault(),
+            'locale_plural_forms'   => $locale->getPluralForms(),
+        ));
+        return true;
     }
     
-<<<<<<< HEAD
-=======
-    public function editKey(Entity\Key $key){
-        
-    }
-   
-    public function addTranslation(){
-        
-    }
-    
->>>>>>> FETCH_HEAD
     public function editTranslation(){
         
     }
@@ -156,12 +160,7 @@ class TranslationService implements ServiceManagerAwareInterface {
      * List all translations
      * @return array
      */
-<<<<<<< HEAD
     public function getTranslations($paginator = false){
         return $this->serviceManager->get("rt_translation_translation_table")->fetchAll($paginator);
-=======
-    public function getTranslations(){
-        return $this->serviceManager->get("rt_translation_translation_table")->fetchAll();
->>>>>>> FETCH_HEAD
     }
 }

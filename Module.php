@@ -63,6 +63,11 @@ class Module implements
         
         // translator help to all view helpers
         $viewHelper->setInvokableClass('rt_translation_plugin_translator', '\RtTranslation\I18n\Translator\Loader\Database', true);
+        //$viewHelper = $serviceManager->get('viewHelperManager');
+        $viewHelper->get("translate")->setTranslator($translator);
+        $viewHelper->get("translatePlural")->setTranslator($translator);
+        $viewHelper->get("formInput")->setTranslator($translator);
+        
         
         $events->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function(MvcEvent $e) use ($mylocale) {
             $controller      = $e->getTarget();
@@ -74,15 +79,9 @@ class Module implements
         $events->attach('Zend\I18n\Translator\Translator', Translator::EVENT_MISSING_TRANSLATION, function ($e)  use ($collector){
             $params = $e->getParams();
             $collector->addTranslationCall($params['message'], $params['text_domain'], $params['locale'], true);
-            
-            /*$event = $e->getName();
-            
-            printf(
-                'Handled event "%s", with parameters %s',
-                $event,
-                json_encode($params)
-            );*/
         });
+        
+        
     }
     
     protected function setTranslatorToHelpers(){
@@ -162,7 +161,7 @@ class Module implements
                 },
                 'rt_translation_translation_form' => function(ServiceManager $sm) {
                     $form = new Form\TranslationForm();
-                    //$form->setInputFilter(new Form\LocaleFilter());
+                    $form->setInputFilter(new Form\TranslationFilter());
                     return $form;
                 },  
                         

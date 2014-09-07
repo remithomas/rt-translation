@@ -48,7 +48,7 @@ class TranslationTable extends AbstractTableGateway
             $paginator = new Paginator($paginatorAdapter);
             return $paginator;
         }
-        $resultSet = $this->tableGateway->select();
+        $resultSet = $this->select();
         return $resultSet;
     }
 }

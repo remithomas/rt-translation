@@ -12,25 +12,36 @@ use Zend\Session\Container;
 use Zend\Form\Form;
 
 use RtTranslation\Service\TranslationService;
-use RtTranslation\Entity\Locale as RtLocale;
+use RtTranslation\Entity\Locale;
 
 class TranslationController extends AbstractActionController
 {
-    
+    /**
+     * Locale form
+     * @var \RtTranslation\Form\LocaleForm 
+     */
     protected $localeForm;
 
+    /**
+     * Key form
+     * @var \RtTranslation\Form\KeyForm  
+     */
     protected $keyForm;
     
+    /**
+     * Translation form
+     * @var \RtTranslation\Form\TranslationForm  
+     */
     protected $translationForm;
     
     /**
-     *
+     * Translation service
      * @var \RtTranslation\Service\TranslationService 
      */
     protected $translationService;
 
     /**
-     *
+     * Action to change the locale
      * @return \Zend\View\Model\ViewModel 
      */
     public function changelocaleAction(){
@@ -48,13 +59,8 @@ class TranslationController extends AbstractActionController
         // translate
         $sessionContainer = new Container('locale');
         
-        switch ($myLocale){
-            case 'fr_FR':
-                break;
-            case 'en_US':
-                break;
-            default :
-                $myLocale = 'en_US';
+        if(!in_array($myLocale, $this->getTranslationService()->getLocales(false))){
+            $myLocale = 'en_US';
         }
         
         $sessionContainer->offsetSet('mylocale', $myLocale);
@@ -105,14 +111,10 @@ class TranslationController extends AbstractActionController
         $service    = $this->getTranslationService();
         
         if($request->isPost()) {
+            $form->bind(new Locale());
             $form->setData($request->getPost());
             if($form->isValid()) {
                 $service->addLocale($form->getData());
-<<<<<<< HEAD
-                // redirect
-                
-=======
->>>>>>> FETCH_HEAD
             }
         }
         
@@ -121,6 +123,10 @@ class TranslationController extends AbstractActionController
         return $viewmodel;
     }
     
+    /**
+     * 
+     * @return \Zend\View\Model\ViewModel
+     */
     public function editlocaleAction(){
         $viewmodel = new ViewModel();
         return $viewmodel;
@@ -144,19 +150,32 @@ class TranslationController extends AbstractActionController
     }
     
     /**
-     * Add key action
+     * 
      * @return \Zend\View\Model\ViewModel
      */
     public function addkeyAction(){
+        $viewmodel = new ViewModel();
+        return $viewmodel;
+    }
+    
+    /**
+     * 
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function addtranslationAction(){
+        
         $viewmodel  = new ViewModel();
         $request    = $this->getRequest();
-        $form       = $this->getKeyForm();
+        $form       = $this->getTranslationForm();
         $service    = $this->getTranslationService();
         
         if($request->isPost()) {
+            $form->bind(new Translation());
             $form->setData($request->getPost());
             if($form->isValid()) {
-                $service->addKey($form->getData());
+                $service->addTranslation($form->getData());
+            }else{
+                var_dump($form->getData());
             }
         }
         
@@ -167,21 +186,18 @@ class TranslationController extends AbstractActionController
     
     public function translationAction(){
         $viewmodel = new ViewModel();
+        
         $paginator = $this->getTranslationService()->getTranslations(true);
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-        // set the number of items per page to 20
-        $paginator->setItemCountPerPage(20);
+        // set the number of items per page to 10
+        $paginator->setItemCountPerPage(10);
         
         $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }
-    
-    public function addtranslationAction(){
-        $viewmodel = new ViewModel();
-        return $viewmodel;
-    }
-    
+
+
     /**
      * 
      * @param \Zend\Form\Form $localeForm
@@ -192,10 +208,6 @@ class TranslationController extends AbstractActionController
         return $this;
     }
     
-    /**
-     * 
-     * @return \Zend\Form\Form
-     */
     public function getLocaleForm(){
         if(!$this->localeForm){
             $this->setLocaleForm($this->getServiceLocator()->get("rt_translation_locale_form"));
@@ -203,20 +215,11 @@ class TranslationController extends AbstractActionController
         return $this->localeForm;
     }
     
-    /**
-     * 
-     * @param \Zend\Form\Form $keyForm
-     * @return \RtTranslation\Controller\TranslationController
-     */
     public function setKeyForm(Form $keyForm){
         $this->keyForm = $keyForm;
         return $this;
     }
     
-    /**
-     * 
-     * @return \Zend\Form\Form
-     */
     public function getKeyForm(){
         if(!$this->keyForm){
             $this->setKeyForm($this->getServiceLocator()->get("rt_translation_key_form"));
@@ -224,6 +227,11 @@ class TranslationController extends AbstractActionController
         return $this->keyForm;
     }
     
+    /**
+     * 
+     * @param \Zend\Form\Form $translationForm
+     * @return \RtTranslation\Controller\TranslationController
+     */
     public function setTranslationForm(Form $translationForm){
         $this->translationForm = $translationForm;
         return $this;
@@ -235,7 +243,7 @@ class TranslationController extends AbstractActionController
      */
     public function getTranslationForm(){
         if(!$this->translationForm){
-            $this->setLocaleForm($this->getServiceLocator()->get("rt_translation_translation_form"));
+            $this->setTranslationForm($this->getServiceLocator()->get("rt_translation_translation_form"));
         }
         return $this->translationForm;
     }

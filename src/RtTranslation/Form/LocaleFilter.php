@@ -44,8 +44,6 @@ class LocaleFilter extends InputFilter{
                 ),
             ),
         ));
-        
-        
     }
     
     

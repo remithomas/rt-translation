@@ -54,4 +54,18 @@ class KeyTable extends AbstractTableGateway
         $resultSet = $this->tableGateway->select();
         return $resultSet;
     }
+    
+    public function fetchTextDomains(){
+        
+        $textDomains = array();
+        $resultSet = $this->select(function (Select $select)
+        {
+            $select->columns(array('key_text_domain'));
+            $select->group('key_text_domain');
+        });
+        foreach ($resultSet->toArray() as $textDomain){
+            $textDomains[] = $textDomain['key_text_domain'];
+        }
+        return $textDomains;
+    }
 }

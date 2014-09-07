@@ -20,12 +20,6 @@ class Locale{
      *
      * @var bool 
      */
-    protected $default;
-    
-    /**
-     *
-     * @var bool 
-     */
     protected $published;
 
     /**
@@ -83,7 +77,7 @@ class Locale{
      * @return \RtTranslation\Entity\Locale
      */
     public function setPublished($published){
-        $this->published = ($published === "1" || $published === true);
+        $this->published = $published;
         return $this;
     }
     
@@ -111,23 +105,5 @@ class Locale{
      */
     public function getPluralForms(){
         return $this->pluralForms;
-    }
-    
-    /**
-     * 
-     * @param integer|bool $default
-     * @return \RtTranslation\Entity\Locale
-     */
-    public function setDefault($default){
-        $this->default = ($default === "1" || $default === true);
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function getDefault(){
-        return $this->default;
     }
 }

@@ -39,9 +39,10 @@ class DatabaseTranslationService implements FactoryInterface
                 $translator->addRemoteTranslations('rt_translation_plugin_translator', $textDomain);
             }
         }else{
-            // load all text domains of the database
-            // default
-            $translator->addRemoteTranslations('rt_translation_plugin_translator', 'default');
+            $textDomains = $serviceLocator->get("rt_translation_translation_service")->getTextDomains();
+            foreach ($textDomains as $textDomain){
+                $translator->addRemoteTranslations('rt_translation_plugin_translator', $textDomain);
+            }
         }
         
         return $translator;
