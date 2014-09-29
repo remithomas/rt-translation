@@ -1,9 +1,29 @@
 <h1><?php echo $this->translate("List of locales", "RtTranslation"); ?></h1>
 
-<ul>
-<?php
-foreach ($this->locales as $locale){
-    echo sprintf("<li>[%s] %s</li>", $locale['locale_locale'], $locale['locale_name']);
-}
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th><?php echo $this->translate("Locale", "RtTranslation"); ?></th>
+        <th><?php echo $this->translate("Name of locale", "RtTranslation"); ?></th>
+        <th><?php echo $this->translate("Actions", "RtTranslation"); ?></th>
+    </tr>
+    <?php
+    foreach ($this->paginator as $locale){
+        
+        echo sprintf("<tr><td>%s</td><td>%s</td><td><a class='btn btn-default' href='".$this->url("developer/translation/locale/edit", array("localeId"=>$locale->getLocaleId()))."'>". $this->translate("Edit", "RtTranslation")."</a></td></tr>", $locale->getLocale(), $locale->getName());
+    }
+    ?>
+</table>
+<?php // add at the end of the file after the table
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    // the scrolling style; see http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+    'sliding',
+    // the partial to use to render the control
+    array('partial/paginator.phtml', 'RtTranslation'),
+    // the route to link to when a user clicks a control link
+    array(
+        'route' => 'developer/translation/locale'
+    )
+);
 ?>
-</ul>

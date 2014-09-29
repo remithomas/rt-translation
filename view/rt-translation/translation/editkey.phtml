@@ -9,13 +9,15 @@
     
     $form   ->setAttribute('method', 'post')
             ->setAttribute("role", "form")
-            ->setAttribute("action", $this->url("developer/translation/key/add", array()))
+            ->setAttribute("action", $this->url("developer/translation/key/edit", array("keyId"=>$this->form->get("keyId")->getValue())))
             ->setAttribute("name", "KeyLocale")
             ->setAttribute("id", "KeyLocale")
             ->setAttribute("class", "form-horizontal");
     
     // Render the opening tag
     echo $this->form()->openTag($form);
+    
+    echo $this->formHidden($form->get("keyId"));
     ?>
     <div class="form-group ">
         <?php

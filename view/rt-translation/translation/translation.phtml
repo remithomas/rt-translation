@@ -1,14 +1,17 @@
-<table class="table">
+<table class="table table-bordered table-hover table-striped">
     <tr>
         <th><?php echo $this->translate("Locale", "RtTranslation"); ?></th>
         <th><?php echo $this->translate("Message", "RtTranslation"); ?></th>
         <th><?php echo $this->translate("Text domain", "RtTranslation"); ?></th>
         <th><?php echo $this->translate("Translation", "RtTranslation"); ?></th>
+        <th><?php echo $this->translate("Plural index", "RtTranslation"); ?></th>
+        <th><?php echo $this->translate("Published", "RtTranslation"); ?></th>
+        <th><?php echo $this->translate("Actions", "RtTranslation"); ?></th>
     </tr>
     <?php
     
     foreach ($this->paginator as $translation){
-        echo sprintf("<tr><td>%s</td><td>%s</td></tr>", $translation->getLocale(), $translation->getTranslation());
+        echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $translation->getLocale()->getName(), $translation->getKey()->getMessage(), $translation->getKey()->getTextDomain(), $translation->getTranslation(), $translation->getPluralIndex(), $translation->getPublished());
     }
     ?>
 </table>

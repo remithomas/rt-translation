@@ -2,108 +2,183 @@
 
 namespace RtTranslation\Entity;
 
-class Locale{
-   
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TranslationLocale
+ *
+ * @ORM\Table(name="translation_locale")
+ * @ORM\Entity
+ */
+class Locale
+{
     /**
+     * @var integer
      *
-     * @var string 
+     * @ORM\Column(name="locale_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $name;
-    
-    /**
-     *
-     * @var string 
-     */
-    protected $locale;
+    private $localeId;
 
     /**
+     * @var string
      *
-     * @var bool 
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
-    protected $published;
+    private $name;
 
     /**
+     * @var string
      *
-     * @var string 
+     * @ORM\Column(name="locale", type="string", length=6, nullable=false)
      */
-    protected $pluralForms;
+    private $locale;
 
     /**
-     * Constructor
+     * @var boolean
+     *
+     * @ORM\Column(name="published", type="boolean", nullable=false)
      */
-    public function __construct() {
-        ;
+    private $published;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="`default`", type="boolean", nullable=false)
+     */
+    private $default;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plural_forms", type="string", length=255, nullable=false)
+     */
+    private $pluralForms = 'nplurals=2; plural=(n==1 ? 0 : 1)';
+
+
+    /**
+     * Get localeId
+     *
+     * @return integer 
+     */
+    public function getLocaleId()
+    {
+        return $this->localeId;
     }
-    
+
     /**
-     * Set name of the locale
+     * Set name
+     *
      * @param string $name
-     * @return \RtTranslation\Entity\Locale
+     * @return TranslationLocale
      */
-    public function setName($name){
+    public function setName($name)
+    {
         $this->name = $name;
+
         return $this;
     }
-    
+
     /**
-     * Get name of the locale
-     * @return string
+     * Get name
+     *
+     * @return string 
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
-    
+
     /**
      * Set locale
+     *
      * @param string $locale
-     * @return \RtTranslation\Entity\Locale
+     * @return TranslationLocale
      */
-    public function setLocale($locale){
+    public function setLocale($locale)
+    {
         $this->locale = $locale;
+
         return $this;
     }
-    
+
     /**
      * Get locale
-     * @return string
+     *
+     * @return string 
      */
-    public function getLocale(){
+    public function getLocale()
+    {
         return $this->locale;
     }
-    
+
     /**
-     * 
-     * @param type $published
-     * @return \RtTranslation\Entity\Locale
+     * Set published
+     *
+     * @param boolean $published
+     * @return TranslationLocale
      */
-    public function setPublished($published){
+    public function setPublished($published)
+    {
         $this->published = $published;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return type
+     * Get published
+     *
+     * @return boolean 
      */
-    public function getPublished(){
+    public function getPublished()
+    {
         return $this->published;
     }
-    
+
     /**
-     * 
-     * @param string $pluralForms
-     * @return \RtTranslation\Entity\Locale
+     * Set default
+     *
+     * @param boolean $default
+     * @return TranslationLocale
      */
-    public function setPluralForms($pluralForms){
-        $this->pluralForms = $pluralForms;
+    public function setDefault($default)
+    {
+        $this->default = $default;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return string
+     * Get default
+     *
+     * @return boolean 
      */
-    public function getPluralForms(){
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * Set pluralForms
+     *
+     * @param string $pluralForms
+     * @return TranslationLocale
+     */
+    public function setPluralForms($pluralForms)
+    {
+        $this->pluralForms = $pluralForms;
+
+        return $this;
+    }
+
+    /**
+     * Get pluralForms
+     *
+     * @return string 
+     */
+    public function getPluralForms()
+    {
         return $this->pluralForms;
     }
 }

@@ -2,89 +2,93 @@
 
 namespace RtTranslation\Entity;
 
-class Key{
-    
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TranslationKey
+ *
+ * @ORM\Table(name="translation_key")
+ * @ORM\Entity
+ */
+class Key
+{
     /**
+     * @var integer
      *
-     * @var integer 
+     * @ORM\Column(name="key_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
+    private $keyId;
 
     /**
-     * 
-     * @var string 
-     */
-    protected $message;
-    
-    /**
+     * @var string
      *
-     * @var string 
+     * @ORM\Column(name="message", type="string", length=512, nullable=false)
      */
-    protected $textDomain = 'default';
+    private $message;
 
     /**
-     * 
-     * @param array $data
-     * @return \RtTranslation\Entity\Key
+     * @var string
+     *
+     * @ORM\Column(name="text_domain", type="string", length=255, nullable=false)
      */
-    public function exchangeArray(array $data){
-        $this->id = (isset($data['key_id']) ? $data['key_id'] : null);
-        $this->message = (isset($data['key_message']) ? $data['key_message'] : null);
-        $this->textDomain = (isset($data['key_text_domain']) ? $data['key_text_domain'] : null);
-        return $this;
-    }
-    
+    private $textDomain = 'default';
+
+
     /**
-     * 
-     * @param integer $id
-     * @return \RtTranslation\Entity\Key
+     * Get keyId
+     *
+     * @return integer 
      */
-    public function setId($id){
-        $this->id = (int) $id;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return integer
-     */
-    public function getId(){
-        return $this->id;
+    public function getKeyId()
+    {
+        return $this->keyId;
     }
 
     /**
-     * 
+     * Set message
+     *
      * @param string $message
-     * @return \RtTranslation\Entity\Key
+     * @return TranslationKey
      */
-    public function setMessage($message){
+    public function setMessage($message)
+    {
         $this->message = $message;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return string
+     * Get message
+     *
+     * @return string 
      */
-    public function getMessage(){
+    public function getMessage()
+    {
         return $this->message;
     }
-    
+
     /**
-     * 
-     * @param string $message
-     * @return \RtTranslation\Entity\Key
+     * Set textDomain
+     *
+     * @param string $textDomain
+     * @return TranslationKey
      */
-    public function setTextDomain($textDomain){
+    public function setTextDomain($textDomain)
+    {
         $this->textDomain = $textDomain;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return string
+     * Get textDomain
+     *
+     * @return string 
      */
-    public function getTextDomain(){
+    public function getTextDomain()
+    {
         return $this->textDomain;
     }
 }

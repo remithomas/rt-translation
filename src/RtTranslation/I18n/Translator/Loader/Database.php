@@ -38,10 +38,10 @@ class Database implements RemoteLoaderInterface
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select();
         $select ->from('translation_locale')
-                ->columns(array('locale_plural_forms'))
+                ->columns(array('plural_forms'))
                 ->where(array(
-                    'locale_locale' => $locale,
-                    'locale_published' => 1
+                    'locale' => $locale,
+                    'published' => 1
                 ));
         
         $localeInformation = $this->dbAdapter->query(
@@ -55,18 +55,19 @@ class Database implements RemoteLoaderInterface
         $textDomain = new TextDomain();
         $aLocaleInformation = $localeInformation->current();
         $textDomain->setPluralRule(
-            \Zend\I18n\Translator\Plural\Rule::fromString($aLocaleInformation['locale_plural_forms'])
+            \Zend\I18n\Translator\Plural\Rule::fromString($aLocaleInformation['plural_forms'])
         );
         
         $select = $sql->select();
         $select ->from('translation_translation')
-                ->columns(array('translation_locale','translation_translation','translation_plural_index'))
-                ->join("translation_key", 'translation_key.key_id = translation_translation.translation_key_id', array('key_message'))
+                ->columns(array('locale_id','translation','plural_index'))
+                ->join("translation_key", 'translation_key.key_id = translation_translation.key_id', array('message'))
+                ->join("translation_locale", 'translation_locale.locale_id = translation_translation.locale_id', array())
                 ->where(array(
-                    'translation_translation.translation_locale' => $locale,
-                    'translation_translation.translation_published' => 1,
+                    'translation_locale.locale' => $locale,
+                    'translation_translation.published' => 1,
                 ))
-                ->order(array('translation_translation.translation_translation ASC','translation_translation.translation_plural_index ASC'));
+                ->order(array('translation_translation.translation ASC','translation_translation.plural_index ASC'));
         
         $messages = $this->dbAdapter->query(
             $sql->getSqlStringForSqlObject($select),
@@ -82,9 +83,9 @@ class Database implements RemoteLoaderInterface
                         //$message['translation_plural_index'] => $textDomain[$message['key_message']]
                     );
                 }
-                $textDomain[$message['key_message']][$message['translation_plural_index']] = $message['translation_translation'];
+                $textDomain[$message['message']][$message['plural_index']] = $message['translation'];
             }else{
-                $textDomain[$message['key_message']] = $message['translation_translation'];
+                $textDomain[$message['message']] = $message['translation'];
             }
             
         }

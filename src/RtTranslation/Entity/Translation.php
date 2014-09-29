@@ -2,239 +2,279 @@
 
 namespace RtTranslation\Entity;
 
-class Translation {
-    
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TranslationTranslation
+ *
+ * @ORM\Table(name="translation_translation", indexes={@ORM\Index(name="translation_locale_id", columns={"locale_id"}), @ORM\Index(name="translation_key_id", columns={"key_id"})})
+ * @ORM\Entity
+ */
+class Translation
+{
     /**
+     * @var integer
      *
-     * @var integer 
+     * @ORM\Column(name="translation_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
+    private $translationId;
 
     /**
+     * @var string
      *
-     * @var string 
+     * @ORM\Column(name="translation", type="text", nullable=false)
      */
-    protected $locale;
-    
-    /**
-     *
-     * @var integer 
-     */
-    protected $keyId;
-    
-    /**
-     *
-     * @var string 
-     */
-    protected $translation;
-    
-    /**
-     *
-     * @var integer 
-     */
-    protected $pluralIndex;
+    private $translation;
 
     /**
+     * @var boolean
      *
-     * @var integer 
+     * @ORM\Column(name="plural_index", type="boolean", nullable=false)
      */
-    protected $author = 1;
-    
+    private $pluralIndex = '1';
+
     /**
+     * @var integer
      *
-     * @var integer 
+     * @ORM\Column(name="author", type="integer", nullable=false)
      */
-    protected $version = 0;
-    
+    private $author;
+
     /**
+     * @var integer
      *
-     * @var integer 
+     * @ORM\Column(name="version", type="integer", nullable=false)
      */
-    protected $timestamp;
-    
+    private $version = '0';
+
     /**
+     * @var \DateTime
      *
-     * @var bool 
+     * @ORM\Column(name="timestamp", type="datetime", nullable=false)
      */
-    protected $published;
-    
+    private $timestamp;
+
     /**
-     * 
-     * @param array $data
-     * @return \RtTranslation\Entity\Translation
+     * @var boolean
+     *
+     * @ORM\Column(name="published", type="boolean", nullable=false)
      */
-    public function exchangeArray(array $data){
-        $this->id = (isset($data['translation_id']) ? $data['translation_id'] : null);
-        $this->locale = (isset($data['translation_locale']) ? (string) $data['translation_locale'] : null);
-        $this->keyId = (isset($data['translation_key_id']) ? (integer) $data['translation_key_id'] : null);
-        $this->translation = (isset($data['translation_translation']) ? (string) $data['translation_translation'] : null);
-        $this->pluralIndex = (isset($data['translation_plural_index']) ? (integer) $data['translation_plural_index'] : null);
-        $this->author = (isset($data['translation_author']) ? (integer) $data['translation_author'] : null);
-        $this->version = (isset($data['translation_version']) ? (integer) $data['translation_version'] : null);
-        $this->timestamp = (isset($data['translation_timestamp']) ? (integer) $data['translation_timestamp'] : null);
-        $this->published = (isset($data['translation_published']) ? (bool) $data['translation_published'] : null);
-        return $this;
+    private $published = '0';
+
+    /**
+     * @var \TranslationKey
+     *
+     * @ORM\ManyToOne(targetEntity="Key")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="key_id", referencedColumnName="key_id")
+     * })
+     */
+    private $key;
+
+    /**
+     * @var \TranslationLocale
+     *
+     * @ORM\ManyToOne(targetEntity="Locale")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="locale_id", referencedColumnName="locale_id")
+     * })
+     */
+    private $locale;
+
+
+    /**
+     * Get translationId
+     *
+     * @return integer 
+     */
+    public function getTranslationId()
+    {
+        return $this->translationId;
     }
-    
+
     /**
-     * 
-     * @param integer $id
-     * @return \RtTranslation\Entity\Translation
-     */
-    public function setId($id){
-        $this->id = (int) $id;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return integer
-     */
-    public function getId(){
-        return $this->id;
-    }
-    
-    /**
-     * 
-     * @param string $locale
-     * @return \RtTranslation\Entity\Translation
-     */
-    public function setLocale($locale){
-        $this->locale = $locale;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function getLocale(){
-        return $this->locale;
-    }
-    
-    /**
-     * 
-     * @param integer $keyId
-     * @return \RtTranslation\Entity\Translation
-     */
-    public function setKeyId($keyId){
-        $this->keyId = $keyId;
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return integer
-     */
-    public function getKeyId(){
-        return $this->keyId;
-    }
-    
-    /**
-     * 
+     * Set translation
+     *
      * @param string $translation
-     * @return \RtTranslation\Entity\Translation
+     * @return TranslationTranslation
      */
-    public function setTranslation($translation){
+    public function setTranslation($translation)
+    {
         $this->translation = $translation;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return string
+     * Get translation
+     *
+     * @return string 
      */
-    public function getTranslation(){
+    public function getTranslation()
+    {
         return $this->translation;
     }
-    
+
     /**
-     * 
-     * @param integer $pluralIndex
-     * @return \RtTranslation\Entity\Translation
+     * Set pluralIndex
+     *
+     * @param boolean $pluralIndex
+     * @return TranslationTranslation
      */
-    public function setPluralIndex($pluralIndex){
+    public function setPluralIndex($pluralIndex)
+    {
         $this->pluralIndex = $pluralIndex;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return integer
+     * Get pluralIndex
+     *
+     * @return boolean 
      */
-    public function getPluralIndex(){
+    public function getPluralIndex()
+    {
         return $this->pluralIndex;
     }
-    
+
     /**
-     * 
+     * Set author
+     *
      * @param integer $author
-     * @return \RtTranslation\Entity\Translation
+     * @return TranslationTranslation
      */
-    public function setAuthor($author){
+    public function setAuthor($author)
+    {
         $this->author = $author;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return integer
+     * Get author
+     *
+     * @return integer 
      */
-    public function getAuthor(){
+    public function getAuthor()
+    {
         return $this->author;
     }
-    
+
     /**
-     * 
+     * Set version
+     *
      * @param integer $version
-     * @return \RtTranslation\Entity\Translation
+     * @return TranslationTranslation
      */
-    public function setVersion($version){
-        $this->version = (int) $version;
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return integer
+     * Get version
+     *
+     * @return integer 
      */
-    public function getVersion(){
+    public function getVersion()
+    {
         return $this->version;
     }
-    
+
     /**
-     * 
-     * @param integer $timestamp
-     * @return \RtTranslation\Entity\Translation
+     * Set timestamp
+     *
+     * @param \DateTime $timestamp
+     * @return TranslationTranslation
      */
-    public function setTimestamp($timestamp){
-        $this->timestamp = (int) $timestamp;
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return integer
+     * Get timestamp
+     *
+     * @return \DateTime 
      */
-    public function getTimestamp(){
+    public function getTimestamp()
+    {
         return $this->timestamp;
     }
-    
+
     /**
-     * 
-     * @param type $published
-     * @return \RtTranslation\Entity\Translation
+     * Set published
+     *
+     * @param boolean $published
+     * @return TranslationTranslation
      */
-    public function setPublished($published){
-        $this->published = ($published === "1" || $published === true);
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @return bool
+     * Get published
+     *
+     * @return boolean 
      */
-    public function getPublished(){
+    public function getPublished()
+    {
         return $this->published;
+    }
+
+    /**
+     * Set key
+     *
+     * @param \TranslationKey $key
+     * @return TranslationTranslation
+     */
+    public function setKey(\TranslationKey $key = null)
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
+     * Get key
+     *
+     * @return \TranslationKey 
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param \TranslationLocale $locale
+     * @return TranslationTranslation
+     */
+    public function setLocale(\TranslationLocale $locale = null)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return \TranslationLocale 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }

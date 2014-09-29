@@ -29,7 +29,7 @@ return array(
                         'locale' => '',
                     ),
                     'constraints' => array (
-                        //'locale' => '[a-zA-Z]*',
+                        'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
                      )
                 ),
             ),
@@ -70,13 +70,13 @@ return array(
                                     'edit' => array(
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route'    => '/edit/:locale',
+                                            'route'    => '/edit/:localeId',
                                             'defaults' => array(
                                                 'controller' => 'RtTranslation\Controller\Translation',
                                                 'action'     => 'editlocale',
                                             ),
                                             'constraints' => array(
-                                                'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                                                'localeId' => '[0-9]+',
                                             ),
                                         ),
                                     ),
@@ -106,13 +106,13 @@ return array(
                                     'edit' => array(
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route'    => '/edit/:key',
+                                            'route'    => '/edit/:keyId',
                                             'defaults' => array(
                                                 'controller' => 'RtTranslation\Controller\Translation',
                                                 'action'     => 'editkey',
                                             ),
                                             'constraints' => array(
-                                                'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                                                'keyId' => '[0-9]+',
                                             ),
                                         ),
                                     ),
@@ -213,4 +213,27 @@ return array(
         )
     ),
     
+    // Doctrine config
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        )
+    ),
 );
+
+/*  
+./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:convert-mapping --namespace="RtTranslation\\Entity\\" --force  --from-database annotation ./vendor/remithomas/rt-translation/RtTranslation/src
+./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:generate-entities ./vendor/remithomas/rt-translation/RtTranslation/src/ --generate-annotations=true
+ * 
+ ./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:convert-mapping --namespace="RtTranslation\\Entity\\" --force  --from-database annotation ./module/RtTranslation/src
+ ./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:generate-entities ./module/RtTranslation/src/ --generate-annotations=true 
+   */

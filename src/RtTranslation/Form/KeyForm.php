@@ -10,6 +10,11 @@ class KeyForm extends Form{
         parent::__construct($name, $options);
         
         $this->add(array(
+            'name' => 'keyId',
+            'type'=>'Zend\Form\Element\Hidden',
+        ));
+        
+        $this->add(array(
             'name' => 'message',
             'type'=>'Zend\Form\Element\Text',
             'attributes' => array(

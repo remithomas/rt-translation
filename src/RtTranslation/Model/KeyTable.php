@@ -60,11 +60,11 @@ class KeyTable extends AbstractTableGateway
         $textDomains = array();
         $resultSet = $this->select(function (Select $select)
         {
-            $select->columns(array('key_text_domain'));
-            $select->group('key_text_domain');
+            $select->columns(array('text_domain'));
+            $select->group('text_domain');
         });
         foreach ($resultSet->toArray() as $textDomain){
-            $textDomains[] = $textDomain['key_text_domain'];
+            $textDomains[] = $textDomain['text_domain'];
         }
         return $textDomains;
     }

@@ -19,6 +19,9 @@ use Zend\I18n\Translator\Translator;
 use Zend\Session\Container;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+
 use RtTranslation\Form;
 
 class Module implements
@@ -120,6 +123,8 @@ class Module implements
             'allow_override' => true,
             'invokables' => array(
                 'RtTranslation\Form\Locale'             => 'RtTranslation\Form\LocaleForm',
+                'RtTranslation\Form\Key'                => 'RtTranslation\Form\KeyForm',
+                'RtTranslation\Form\Translation'        => 'RtTranslation\Form\TranslationForm',
                 'rt_translation_translation_service'    => 'RtTranslation\Service\TranslationService',
                 //'rt_translation_plugin_translator'      => 'RtTranslation\Service\DatabaseLoaderFactory',
             ),
@@ -151,17 +156,25 @@ class Module implements
                 },
                 'rt_translation_locale_form' => function(ServiceManager $sm) {
                     $form = new Form\LocaleForm();
-                    $form->setInputFilter(new Form\LocaleFilter());
+                    $form   ->setInputFilter(new Form\LocaleFilter());
+                    // assign hydrator
+                    $hydrator = new DoctrineHydrator($sm->get('doctrine.entitymanager.orm_default'), get_class(new Entity\Locale()));
+                    $form->setHydrator($hydrator);
                     return $form;
                 },
                 'rt_translation_key_form' => function(ServiceManager $sm) {
                     $form = new Form\KeyForm();
                     $form->setInputFilter(new Form\KeyFilter());
+                    // assign hydrator
+                    $hydrator = new DoctrineHydrator($sm->get('doctrine.entitymanager.orm_default'), get_class(new Entity\Key()));
+                    $form->setHydrator($hydrator);
                     return $form;
                 },
                 'rt_translation_translation_form' => function(ServiceManager $sm) {
-                    $form = new Form\TranslationForm();
+                    $form = new Form\TranslationForm($sm->get('doctrine.entitymanager.orm_default'));
                     $form->setInputFilter(new Form\TranslationFilter());
+                    $hydrator = new DoctrineHydrator($sm->get('doctrine.entitymanager.orm_default'), get_class(new Entity\Translation()));
+                    $form->setHydrator($hydrator);
                     return $form;
                 },  
                         

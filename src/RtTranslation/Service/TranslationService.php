@@ -8,6 +8,10 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Hydrator;
 
+ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+ use Zend\Paginator\Paginator;
+
 use RtTranslation\Options\ModuleOptions;
 use RtTranslation\Entity;
 
@@ -24,6 +28,12 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @var type 
      */
     protected $serviceManager;
+    
+    /**
+     *
+     * @var type 
+     */
+    protected $entityManager;
 
     /**
      * get service options
@@ -59,6 +69,14 @@ class TranslationService implements ServiceManagerAwareInterface {
         return $this->serviceManager;
     }
 
+    public function getEntityManager(){
+        if(is_null($this->entityManager)){
+            $this->entityManager = $this->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->entityManager;
+    }
+
+
     /**
      * Set service manager instance
      *
@@ -77,13 +95,27 @@ class TranslationService implements ServiceManagerAwareInterface {
     
     
     /**
-     * List all locales
-     * @return array
+     * 
+     * @param bool $paginator
+     * @return \Zend\Paginator\Paginator
      */
-    public function getLocales(){
-        return $this->serviceManager->get("rt_translation_locale_table")->fetchAll();
+    public function getLocales($paginator = false){
+        if($paginator){
+            $repository = $this->getEntityManager()->getRepository('RtTranslation\Entity\Locale');
+            $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('user')));
+            $paginator = new Paginator($adapter);
+            return $paginator;
+        }
     }
     
+    /**
+     * Get one locale
+     * @param integer $localeId
+     * @return RtTranslation\Entity\Locale
+     */
+    public function getLocale($localeId){
+        return $this->getEntityManager()->find('RtTranslation\Entity\Locale', $localeId);
+    }
     
     /**
      * 
@@ -94,26 +126,39 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @return boolean
      */
     public function addLocale(Entity\Locale $locale){
-        $this->serviceManager->get("rt_translation_locale_table")->insert(array(
-            'locale_name' => utf8_decode($locale->getName()),
-            'locale_locale' => utf8_decode($locale->getLocale()),
-            'locale_published' => (integer) $locale->getPublished(),
-            'locale_default' => (integer) $locale->getDefault(),
-            'locale_plural_forms'   => $locale->getPluralForms(),
-        ));
+        $this->getEntityManager()->persist($locale);
+        $this->getEntityManager()->flush();
         return true;
     }
     
+    /**
+     * 
+     * @param \RtTranslation\Entity\Locale $locale
+     * @return boolean
+     */
     public function editLocale(Entity\Locale $locale){
-        
+        $this->getEntityManager()->merge($locale);
+        $this->getEntityManager()->flush();
+        return true;
     }
     
     public function changeLocale($locale = 'en_US'){
         
     }
     
+    /**
+     * 
+     * @param bool $paginator
+     * @return \Zend\Paginator\Paginator
+     */
     public function getKeys($paginator = false){
-        return $this->serviceManager->get("rt_translation_key_table")->fetchAll($paginator);
+        if($paginator){
+            $repository = $this->getEntityManager()->getRepository('RtTranslation\Entity\Key');
+            $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('user')));
+            $paginator = new Paginator($adapter);
+            return $paginator;
+        }
+        //return $this->serviceManager->get("rt_translation_key_table")->fetchAll($paginator);
     }
     
     /**
@@ -130,15 +175,29 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @return boolean
      */
     public function addKey(Entity\Key $key){
-        $this->serviceManager->get("rt_translation_key_table")->insert(array(
-            'key_message' => utf8_decode($key->getMessage()),
-            'key_text_domain' => utf8_decode($key->getTextDomain()),
-        ));
+        $this->getEntityManager()->persist($key);
+        $this->getEntityManager()->flush();
         return true;
     }
     
+    /**
+     * 
+     * @param \RtTranslation\Entity\Key $key
+     * @return boolean
+     */
     public function editKey(Entity\Key $key){
-        
+        $this->getEntityManager()->merge($key);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+    
+    /**
+     * 
+     * @param integer $keyId
+     * @return \RtTranslation\Entity\Key
+     */
+    public function getKey($keyId){
+        return $this->getEntityManager()->find('RtTranslation\Entity\Key', $keyId);
     }
    
     public function addTranslation(Entity\Translation $translation){
@@ -161,6 +220,11 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @return array
      */
     public function getTranslations($paginator = false){
-        return $this->serviceManager->get("rt_translation_translation_table")->fetchAll($paginator);
+        if($paginator){
+            $repository = $this->getEntityManager()->getRepository('RtTranslation\Entity\Translation');
+            $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('user')));
+            $paginator = new Paginator($adapter);
+            return $paginator;
+        }
     }
 }

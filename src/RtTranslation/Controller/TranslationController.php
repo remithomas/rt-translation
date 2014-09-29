@@ -13,6 +13,7 @@ use Zend\Form\Form;
 
 use RtTranslation\Service\TranslationService;
 use RtTranslation\Entity\Locale;
+use RtTranslation\Entity\Key;
 
 class TranslationController extends AbstractActionController
 {
@@ -94,8 +95,10 @@ class TranslationController extends AbstractActionController
      */
     public function localeAction(){
         $viewmodel = new ViewModel();
-        $locales = $this->getTranslationService()->getLocales();
-        $viewmodel->setVariable("locales", $locales);
+        $paginator = $this->getTranslationService()->getLocales(true);
+        $paginator->setDefaultItemCountPerPage(10);
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }
 
@@ -128,7 +131,24 @@ class TranslationController extends AbstractActionController
      * @return \Zend\View\Model\ViewModel
      */
     public function editlocaleAction(){
-        $viewmodel = new ViewModel();
+        $viewmodel  = new ViewModel();
+        $request    = $this->getRequest();
+        $form       = $this->getLocaleForm();
+        $service    = $this->getTranslationService();
+        $localeId   = $this->params("localeId");
+        
+        if($request->isPost()) {
+            $form->bind(new Locale());
+            $form->setData($request->getPost());
+            if($form->isValid()) {
+                $service->editLocale($form->getData());
+                $form->bind($form->getData());
+            }
+        }else{
+            $form->bind($service->getLocale($localeId));
+        }
+        $viewmodel->setVariable("form", $form);
+        
         return $viewmodel;
     }
     
@@ -138,13 +158,9 @@ class TranslationController extends AbstractActionController
      */
     public function keyAction(){
         $viewmodel = new ViewModel();
-        
         $paginator = $this->getTranslationService()->getKeys(true);
-        // set the current page to what has been passed in query string, or to 1 if none set
-        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-        // set the number of items per page to 10
-        $paginator->setItemCountPerPage(10);
-        
+        $paginator->setDefaultItemCountPerPage(10);
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }
@@ -155,6 +171,32 @@ class TranslationController extends AbstractActionController
      */
     public function addkeyAction(){
         $viewmodel = new ViewModel();
+        return $viewmodel;
+    }
+    
+    /**
+     * 
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function editkeyAction(){
+        $viewmodel  = new ViewModel();
+        $request    = $this->getRequest();
+        $form       = $this->getKeyForm();
+        $service    = $this->getTranslationService();
+        $keyId   = $this->params("keyId");
+        
+        if($request->isPost()) {
+            $form->bind(new Key());
+            $form->setData($request->getPost());
+            if($form->isValid()) {
+                $service->editKey($form->getData());
+                $form->bind($form->getData());
+            }
+        }else{
+            $form->bind($service->getKey($keyId));
+        }
+        $viewmodel->setVariable("form", $form);
+        
         return $viewmodel;
     }
     
@@ -186,13 +228,9 @@ class TranslationController extends AbstractActionController
     
     public function translationAction(){
         $viewmodel = new ViewModel();
-        
         $paginator = $this->getTranslationService()->getTranslations(true);
-        // set the current page to what has been passed in query string, or to 1 if none set
-        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
-        // set the number of items per page to 10
-        $paginator->setItemCountPerPage(10);
-        
+        $paginator->setDefaultItemCountPerPage(2);
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         $viewmodel->setVariable("paginator", $paginator);
         return $viewmodel;
     }

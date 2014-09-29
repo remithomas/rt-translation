@@ -9,79 +9,80 @@
     
     $form   ->setAttribute('method', 'post')
             ->setAttribute("role", "form")
-            ->setAttribute("action", $this->url("developer/translation/key/add", array()))
-            ->setAttribute("name", "formTranslation")
-            ->setAttribute("id", "formTranslation")
+            ->setAttribute("action", $this->url("developer/translation/locale/edit", array("localeId"=>$this->form->get("localeId")->getValue())))
+            ->setAttribute("name", "formLocale")
+            ->setAttribute("id", "formLocale")
             ->setAttribute("class", "form-horizontal");
     
     // Render the opening tag
     echo $this->form()->openTag($form);
+    
+    // localeid
+    echo $this->formHidden($this->form->get("localeId"));
     ?>
-        
     <div class="form-group ">
         <?php
         $locale = $this->form->get("locale");
-        $locale ->setAttribute("class", "form-control")
+        $locale->setAttribute("placeholder", "locale")
+                ->setAttribute("class", "form-control")
                 ->setAttribute("required", false)
                 ->setAttribute("id", "locale");
         ?>
-        <label for="loacale" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $locale->getLabel(); ?> <span class="required">*</span></label>
+        <label for="locale" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $locale->getLabel(); ?> <span class="required">*</span></label>
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-            <?php echo $this->formSelect($locale); ?>
+            <?php echo $this->formInput($locale); ?>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p class="help-block"><?php echo $this->translate("Your key message", "RtTranslation"); ?></p>
+            <p class="help-block"><?php echo $this->translate("Locale", "RtTranslation"); ?></p>
         </div>
     </div>
         
     <div class="form-group ">
         <?php
-        $key = $this->form->get("key");
-        $key->setAttribute("placeholder", "textDomain")
+        $name = $this->form->get("name");
+        $name->setAttribute("placeholder", "name")
                 ->setAttribute("class", "form-control")
                 ->setAttribute("required", false)
-                ->setAttribute("id", "textDomain");
+                ->setAttribute("id", "name");
         ?>
-        <label for="key" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $key->getLabel(); ?> <span class="required">*</span></label>
+        <label for="name" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $name->getLabel(); ?> <span class="required">*</span></label>
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-            <?php echo $this->formSelect($key); ?>
+            <?php echo $this->formInput($name); ?>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p class="help-block"><?php echo $this->translate("Your key message", "RtTranslation"); ?></p>
+            <p class="help-block"><?php echo $this->translate("Name", "RtTranslation"); ?></p>
         </div>
     </div>
-        
+
     <div class="form-group ">
         <?php
-        $message = $this->form->get("translation");
-        $message->setAttribute("placeholder", "Message")
-                ->setAttribute("class", "form-control")
-                ->setAttribute("required", false)
-                ->setAttribute("id", "message");
+        $default = $this->form->get("default");
+        $default   ->setAttribute("class", "form-control")
+                    ->setAttribute("required", false)
+                    ->setAttribute("id", "default");
         ?>
-        <label for="message" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $message->getLabel(); ?> <span class="required">*</span></label>
+        <label for="default" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $default->getLabel(); ?> <span class="required">*</span></label>
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-            <?php echo $this->formInput($message); ?>
+            <?php echo $this->formSelect($default); ?>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p class="help-block"><?php echo $this->translate("Your translation", "RtTranslation"); ?></p>
+            <p class="help-block"><?php echo $this->translate("Default", "RtTranslation"); ?></p>
         </div>
     </div>
-        
+    
     <div class="form-group ">
         <?php
-        $plural = $this->form->get("plural");
-        $plural ->setAttribute("placeholder", "Message")
-                ->setAttribute("class", "form-control")
-                ->setAttribute("required", false)
-                ->setAttribute("id", "plural");
+        $pluralForms = $this->form->get("pluralForms");
+        $pluralForms  ->setAttribute("class", "form-control")
+                    ->setAttribute("required", false)
+                    ->setAttribute("id", "pluralForms");
         ?>
-        <label for="plural" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $plural->getLabel(); ?> <span class="required">*</span></label>
+        <label for="pluralForms" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label"><?php echo $pluralForms->getLabel(); ?> <span class="required">*</span></label>
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-            <?php echo $this->formSelect($plural); ?>
+            <?php echo $this->formSelect($pluralForms); ?>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p class="help-block"><?php echo $this->translate("Plural index", "RtTranslation"); ?></p>
+            <p class="help-block"><?php echo $this->translate("Plural forms of the locale", "RtTranslation"); ?></p>
         </div>
     </div>
         
@@ -97,10 +98,9 @@
             <?php echo $this->formSelect($published); ?>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p class="help-block"><?php echo $this->translate("Publish status of the translation", "RtTranslation"); ?></p>
+            <p class="help-block"><?php echo $this->translate("Publish status of the locale", "RtTranslation"); ?></p>
         </div>
     </div>
-    
     <div class="form-group">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><button class="btn btn-primary" type="submit"><?php echo $this->translate("Save locale", "RtTranslation"); ?></button></div>
     </div>
