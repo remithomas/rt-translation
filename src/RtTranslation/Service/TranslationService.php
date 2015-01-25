@@ -99,13 +99,28 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @param bool $paginator
      * @return \Zend\Paginator\Paginator
      */
-    public function getLocales($paginator = false){
+    public function getLocales($paginator = true){
         if($paginator){
             $repository = $this->getEntityManager()->getRepository('RtTranslation\Entity\Locale');
             $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('user')));
             $paginator = new Paginator($adapter);
             return $paginator;
         }
+    }
+    
+    /**
+     * get id of all published locales
+     * @return array
+     */
+    public function getIdLocales(){
+        $return  = array();
+        $locales = $this->getEntityManager()->getRepository('RtTranslation\Entity\Locale')->findby(array(
+            'published' => 1
+        ));
+        foreach ($locales as $locale){
+            $return[] = $locale->getLocale();
+        }
+        return $return;
     }
     
     /**
@@ -151,7 +166,7 @@ class TranslationService implements ServiceManagerAwareInterface {
      * @param bool $paginator
      * @return \Zend\Paginator\Paginator
      */
-    public function getKeys($paginator = false){
+    public function getKeys($paginator = true){
         if($paginator){
             $repository = $this->getEntityManager()->getRepository('RtTranslation\Entity\Key');
             $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('user')));

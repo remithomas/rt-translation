@@ -60,10 +60,10 @@ class TranslationController extends AbstractActionController
         // translate
         $sessionContainer = new Container('locale');
         
-        if(!in_array($myLocale, $this->getTranslationService()->getLocales(false))){
+        if(!in_array($myLocale, $this->getTranslationService()->getIdLocales())){
             $myLocale = 'en_US';
         }
-        
+
         $sessionContainer->offsetSet('mylocale', $myLocale);
         
         // redirect
@@ -170,7 +170,21 @@ class TranslationController extends AbstractActionController
      * @return \Zend\View\Model\ViewModel
      */
     public function addkeyAction(){
-        $viewmodel = new ViewModel();
+        $viewmodel  = new ViewModel();
+        $request    = $this->getRequest();
+        $form       = $this->getKeyForm();
+        $service    = $this->getTranslationService();
+        
+        if($request->isPost()) {
+            $form->bind(new Key());
+            $form->setData($request->getPost());
+            if($form->isValid()) {
+                $service->addKey($form->getData());
+            }
+        }
+        
+        $viewmodel->setVariable("form", $form);
+        
         return $viewmodel;
     }
     

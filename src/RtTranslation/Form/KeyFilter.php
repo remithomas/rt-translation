@@ -19,8 +19,7 @@ class KeyFilter extends InputFilter{
                 array(
                     'name'    => 'StringLength',
                     'options' => array(
-                        'min' => 2,
-                        'max' => 6,
+                        'min' => 1,
                     ),
                 ),
             ),

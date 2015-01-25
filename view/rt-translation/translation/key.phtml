@@ -1,12 +1,11 @@
-<table class="table table-bordered table-hover table-striped">
+<table class="table">
     <tr>
         <th><?php echo $this->translate("Message", "RtTranslation"); ?></th>
         <th><?php echo $this->translate("Text domain", "RtTranslation"); ?></th>
-        <th><?php echo $this->translate("Action", "RtTranslation"); ?></th>
     </tr>
     <?php
     foreach ($this->paginator as $key){
-        echo sprintf("<tr><td>%s</td><td>%s</td><td><a class='btn btn-default' href='".$this->url("developer/translation/key/edit", array("keyId"=>$key->getKeyId()))."'>". $this->translate("Edit", "RtTranslation")."</a></td></tr>", $key->getMessage(), $key->getTextDomain());
+        echo sprintf("<tr><td>%s</td><td>%s</td></tr>", $key->getMessage(), $key->getTextDomain());
     }
     ?>
 </table>
@@ -24,3 +23,4 @@ echo $this->paginationControl(
     )
 );
 ?>
+<a href='<?php echo $this->url("developer/translation/key/add", array()); ?>'><?php echo $this->translate("Add Message key", 'RtTranslation'); ?></a>

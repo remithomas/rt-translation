@@ -16,6 +16,6 @@ class RtTranslationCurrentLocale  extends AbstractHelper
         if(!$sessionContainer->offsetExists('mylocale')){
             return 'en_US';
         }
-        return $sessionContainer->mylocale;
+        return $sessionContainer->mylocale == "" ? "en_US" : $sessionContainer->mylocale;
     }
 }

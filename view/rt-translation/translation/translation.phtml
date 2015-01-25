@@ -11,7 +11,7 @@
     <?php
     
     foreach ($this->paginator as $translation){
-        echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $translation->getLocale()->getName(), $translation->getKey()->getMessage(), $translation->getKey()->getTextDomain(), $translation->getTranslation(), $translation->getPluralIndex(), $translation->getPublished());
+        echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", $translation->getLocale()->getName(), $translation->getKey()->getMessage(), $translation->getKey()->getTextDomain(), $translation->getTranslation(), $translation->getPluralIndex(), $translation->getPublished());
     }
     ?>
 </table>

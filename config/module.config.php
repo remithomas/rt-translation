@@ -17,6 +17,23 @@ return array(
         ),
     ),
     
+    /* Doctrine Configuration */
+   'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        ),
+    ),
+
+    /* Router Configuration */
     'router' => array(
         'routes' => array(
             'changelocale' => array(
@@ -29,7 +46,7 @@ return array(
                         'locale' => '',
                     ),
                     'constraints' => array (
-                        'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                        //'locale' => '[a-zA-Z]*',
                      )
                 ),
             ),
@@ -46,6 +63,16 @@ return array(
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
+                            'translation' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Literal',
+                                'options' => array(
+                                    'route'    => '/translation',
+                                    'defaults' => array(
+                                        'controller' => 'RtTranslation\Controller\Translation',
+                                        'action'     => 'translation',
+                                    ),
+                                ),
+                            ),
                             'locale' => array(
                                 'type' => 'Zend\Mvc\Router\Http\Literal',
                                 'options' => array(
@@ -106,46 +133,10 @@ return array(
                                     'edit' => array(
                                         'type' => 'Zend\Mvc\Router\Http\Segment',
                                         'options' => array(
-                                            'route'    => '/edit/:keyId',
-                                            'defaults' => array(
-                                                'controller' => 'RtTranslation\Controller\Translation',
-                                                'action'     => 'editkey',
-                                            ),
-                                            'constraints' => array(
-                                                'keyId' => '[0-9]+',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'translation' => array(
-                                'type' => 'Zend\Mvc\Router\Http\Literal',
-                                'options' => array(
-                                    'route'    => '/translation',
-                                    'defaults' => array(
-                                        'controller' => 'RtTranslation\Controller\Translation',
-                                        'action'     => 'translation',
-                                    ),
-                                ),
-                                'may_terminate' => true,
-                                'child_routes' => array(
-                                    'add' => array(
-                                        'type' => 'Zend\Mvc\Router\Http\Literal',
-                                        'options' => array(
-                                            'route'    => '/add',
-                                            'defaults' => array(
-                                                'controller' => 'RtTranslation\Controller\Translation',
-                                                'action'     => 'addtranslation',
-                                            ),
-                                        ),
-                                    ),
-                                    'edit' => array(
-                                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                                        'options' => array(
                                             'route'    => '/edit/:key',
                                             'defaults' => array(
                                                 'controller' => 'RtTranslation\Controller\Translation',
-                                                'action'     => 'edittranslation',
+                                                'action'     => 'editkey',
                                             ),
                                             'constraints' => array(
                                                 'locale' => '[a-zA-Z][a-zA-Z0-9_-]+',
@@ -213,27 +204,4 @@ return array(
         )
     ),
     
-    // Doctrine config
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
-    ),
 );
-
-/*  
-./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:convert-mapping --namespace="RtTranslation\\Entity\\" --force  --from-database annotation ./vendor/remithomas/rt-translation/RtTranslation/src
-./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:generate-entities ./vendor/remithomas/rt-translation/RtTranslation/src/ --generate-annotations=true
- * 
- ./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:convert-mapping --namespace="RtTranslation\\Entity\\" --force  --from-database annotation ./module/RtTranslation/src
- ./official/vendor/doctrine/doctrine-module/bin/doctrine-module orm:generate-entities ./module/RtTranslation/src/ --generate-annotations=true 
-   */
